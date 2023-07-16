@@ -1,8 +1,4 @@
 #!/usr/bin/python3
-"""
-The console v: 0.0.1
-Contains the entry point of the command interpreter.
-"""
 import cmd
 import json
 import re
@@ -159,25 +155,36 @@ class HBNBCommand(cmd.Cmd):
         """
         Handle custom commands.
         """
-        # Regex pattern to match update command with attribute value
-        # in double quotes
-        pattern = r'^update\s+(\w+)\s+(\w+)\s+(\w+)\s+"(.+)"$'
+        # Regex pattern to match different command patterns
+        pattern_all = r'^(\w+)\.all\(\)$'
+        pattern_count = r'^(\w+)\.count\(\)$'
+        pattern_show_instance = r'^(\w+)\.show\("(.+)"\)$'
+        pattern_destroy_instance = r'^(\w+)\.destroy\("(.+)"\)$'
+        pattern_show_user = r'^User\.show\("(.+)"\)$'
 
-        match = re.match(pattern, line)
-        if match:
-            class_name = match.group(1)
-            id = match.group(2)
-            attribute = match.group(3)
-            value = match.group(4)
+        match_all = re.match(pattern_all, line)
+        match_count = re.match(pattern_count, line)
+        match_show_instance = re.match(pattern_show_instance, line)
+        match_destroy_instance = re.match(pattern_destroy_instance, line)
+        match_show_user = re.match(pattern_show_user, line)
 
-            all_objs = storage.all()
-            key = class_name + "." + id
-            if key not in all_objs:
-                print("** no instance found **")
-            else:
-                obj = all_objs[key]
-                setattr(obj, attribute, value)
-                obj.save()
+        if match_all:
+            class_name = match_all.group(1)
+            self.do_all(class_name)
+        elif match_count:
+            class_name = match_count.group(1)
+            self.do_count(class_name)
+        elif match_show_instance:
+            class_name = match_show_instance.group(1)
+            instance_id = match_show_instance.group(2)
+            self.do_show(f"{class_name} {instance_id}")
+        elif match_destroy_instance:
+            class_name = match_destroy_instance.group(1)
+            instance_id = match_destroy_instance.group(2)
+            self.do_destroy(f"{class_name} {instance_id}")
+        elif match_show_user:
+            user_id = match_show_user.group(1)
+            self.do_show(f"User {user_id}")
         else:
             super().default(line)
 
@@ -239,6 +246,23 @@ class HBNBCommand(cmd.Cmd):
         """
         print("Update an instance based on the class name and id by\
               adding or updating an attribute.")
+
+    def do_count(self, arg):
+        """
+        Count the number of instances of a class.
+
+        Usage: <class name>.count()
+        """
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in ["BaseModel", "User", "State", "City",
+                             "Amenity", "Place", "Review"]:
+            print("** class doesn't exist **")
+        else:
+            count = len([obj for obj in storage.all().values()
+                         if args[0] in obj.__class__.__name__])
+            print(count)
 
 
 if __name__ == '__main__':
