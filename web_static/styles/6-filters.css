@@ -1,0 +1,99 @@
+/* Styles for the filters */
+.filters {
+    color: white;
+    height: 70px;
+    width: 100%;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* To align the filters and search button */
+}
+
+.search-button {
+    font-size: 18px;
+    background-color: #FF5A5F; /* Red color */
+    color: #FFFFFF;
+    height: 48px;
+    width: 20%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.9;
+    /* margin-left: auto; Remove this line to align search button at the end */
+}
+
+.search-button:hover {
+    opacity: 0.9;
+}
+
+.search-button:hover {
+    background-color: #E04F54; /* Change the background color on hover */
+    opacity: 0.9;
+}
+
+.locations,
+.amenities {
+    height: 100%;
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-right: 1px solid #DDDDDD;
+    padding: 0 15px;
+    position: relative; /* For positioning the popover dropdown */
+}
+
+.locations h3,
+.amenities h3 {
+    font-weight: 600;
+    color: #484848;
+    margin: 10px 40px 5px;
+}
+
+.locations h4,
+.amenities h4 {
+    font-weight: 400;
+    font-size: 14px;
+    color: #484848;
+    margin: 0 40px;
+}
+
+/* Styles for the dropdowns */
+.popover {
+    visibility: hidden;
+    background-color: #FAFAFA;
+    color: #484848;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    list-style-type: none;
+    width: 100%;
+    position: absolute;
+    top: 100%; /* Position the dropdown below the filter div */
+    left: 0;
+    display: none;
+    z-index: 1;
+}
+
+.popover h2 {
+    font-size: 16px;
+    margin: 10px;
+}
+
+.popover ul {
+    margin: 0;
+    padding: 0;
+}
+
+.popover li {
+    margin: 10px 0;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* Show the dropdown when hovering over the filter div */
+.locations:hover .popover,
+.amenities:hover .popover {
+    display: block;
+    visibility: visible;
+}
